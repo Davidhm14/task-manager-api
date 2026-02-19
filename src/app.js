@@ -5,6 +5,7 @@ const morgan = require('morgan');
 require('dotenv').config();
 
 const { connectDB } = require('./config/database');
+const authRoutes = require('./routes/authRoutes');  // NUEVO
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -25,6 +26,9 @@ app.get('/', (req, res) => {
     database: 'SQL Server'
   });
 });
+
+// Rutas de autenticación  // NUEVO
+app.use('/api/auth', authRoutes);  // NUEVO
 
 // Health Check
 app.get('/health', (req, res) => {
@@ -59,14 +63,13 @@ app.get('/api/tables', async (req, res) => {
 // Iniciar servidor
 const startServer = async () => {
   try {
-    // Conectar a base de datos primero
     await connectDB();
     
-    // Luego iniciar servidor
     app.listen(PORT, () => {
       console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
       console.log(`🏥 Health check: http://localhost:${PORT}/health`);
       console.log(`📊 Ver tablas: http://localhost:${PORT}/api/tables`);
+      console.log(`🔐 Auth endpoints: http://localhost:${PORT}/api/auth`);  // NUEVO
     });
   } catch (error) {
     console.error('❌ Error al iniciar servidor:', error);
