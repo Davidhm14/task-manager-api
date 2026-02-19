@@ -5,7 +5,8 @@ const morgan = require('morgan');
 require('dotenv').config();
 
 const { connectDB } = require('./config/database');
-const authRoutes = require('./routes/authRoutes');  // NUEVO
+const authRoutes = require('./routes/authRoutes');  
+const taskRoutes = require('./routes/taskRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -28,7 +29,8 @@ app.get('/', (req, res) => {
 });
 
 // Rutas de autenticación  // NUEVO
-app.use('/api/auth', authRoutes);  // NUEVO
+app.use('/api/auth', authRoutes);
+app.use('/api/tasks', taskRoutes);
 
 // Health Check
 app.get('/health', (req, res) => {
@@ -69,7 +71,8 @@ const startServer = async () => {
       console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
       console.log(`🏥 Health check: http://localhost:${PORT}/health`);
       console.log(`📊 Ver tablas: http://localhost:${PORT}/api/tables`);
-      console.log(`🔐 Auth endpoints: http://localhost:${PORT}/api/auth`);  // NUEVO
+      console.log(`🔐 Auth endpoints: http://localhost:${PORT}/api/auth`); 
+      console.log(`📝 Task endpoints: http://localhost:${PORT}/api/tasks`);
     });
   } catch (error) {
     console.error('❌ Error al iniciar servidor:', error);
